@@ -1,0 +1,100 @@
+QMainWindow {
+    background-color: #08090d;
+}
+
+QWidget {
+    color: #e8e8ed;
+    font-family: "SF Pro Display", "Helvetica Neue", sans-serif;
+    font-size: 14px;
+}
+
+#sidebar {
+    background-color: #0d0f15;
+    border-right: 1px solid #20232c;
+}
+
+#title {
+    color: #f2f2f5;
+    font-size: 22px;
+    font-weight: 700;
+}
+
+#page_title {
+    color: #f5f5f7;
+    font-size: 28px;
+    font-weight: 700;
+}
+
+#subtitle {
+    color: #777b88;
+    font-size: 13px;
+}
+
+QPushButton {
+    background-color: transparent;
+    color: #9da1ad;
+    border: none;
+    border-radius: 9px;
+    padding: 12px;
+    text-align: left;
+}
+
+QPushButton:hover {
+    background-color: #171a22;
+    color: #ffffff;
+}
+
+QPushButton:pressed {
+    background-color: #20232c;
+}
+
+QLineEdit {
+    background-color: #11131a;
+    color: #f0f0f3;
+    border: 1px solid #282c36;
+    border-radius: 12px;
+    padding: 13px;
+}
+
+QLineEdit:focus {
+    border: 1px solid #555b6b;
+}
+
+QTextEdit {
+    background-color: #0b0d12;
+    color: #e8e8ed;
+    border: none;
+    padding: 15px;
+}
+
+#status {
+    color: #8f96a3;
+    font-size: 12px;
+}
+
+#send_button {
+    background-color: #f0f0f2;
+    color: #101116;
+    border-radius: 10px;
+    padding: 12px 20px;
+    font-weight: 600;
+}
+
+#send_button:hover {
+    background-color: #ffffff;
+}
+
+#card {
+    background-color: #10131a;
+    border: 1px solid #20242e;
+    border-radius: 14px;
+}
+
+#exit_button {
+    color: #a0a3ad;
+}
+
+#exit_button:hover {
+    background-color: #21171a;
+    color: #ffffff;
+}
