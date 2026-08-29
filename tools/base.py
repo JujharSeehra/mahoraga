@@ -1,23 +1,22 @@
 from abc import ABC, abstractmethod
 
+
 class Tool(ABC):
-    name = ""
-    description = ""
 
-    parameters = {
-        "type": "object",
-        "properties": {},
-    }
+    @property
+    @abstractmethod
+    def name(self):
+        pass
 
-    requiresConfirmation = False
+    @property
+    @abstractmethod
+    def description(self):
+        pass
+
+    @abstractmethod
+    def declaration(self):
+        pass
 
     @abstractmethod
     def execute(self, **kwargs):
         pass
-    def declaration(self):
-        return {
-            "type": "function",
-            "name": self.name,
-            "description": self.description,
-            "parameters": self.parameters,
-        }

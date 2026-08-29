@@ -13,3 +13,5 @@ data/skills/*
 
 .vscode/
 .idea/
+
+config/workspaces.json

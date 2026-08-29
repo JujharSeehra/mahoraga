@@ -2,14 +2,12 @@ from PySide6.QtWidgets import ( QMainWindow, QWidget, QVBoxLayout, QHBoxLayout, 
 from PySide6.QtCore import (Qt, QThread, Slot)
 from core.worker import AgentWorker
 from ui.chat import ChatPage
-
+from PySide6.QtWidgets import QMessageBox
 
 class MainWindow(QMainWindow):
 
     def __init__(self, agent):
         super().__init__()
-
-        self.agent = agent
 
         self.setWindowTitle("Mahoraga")
         self.setMinimumSize(1100, 700)
@@ -49,7 +47,7 @@ class MainWindow(QMainWindow):
         sidebar_layout.addStretch()
         self.settings_button = QPushButton("Settings")
         self.exit_button = QPushButton("EXIT")
-        self.exit_button.clicked.connect(self.close)
+        self.exit_button.clicked.connect(self.confirm_exit)
 
         buttons = [self.chat_button,self.dashboard_button,self.memory_button,self.devices_button,self.tools_button,self.settings_button, self.exit_button]
     
@@ -89,16 +87,39 @@ class MainWindow(QMainWindow):
     
         main_layout.addWidget(sidebar)
         main_layout.addWidget(self.pages)
+
+    def confirm_exit(self):
+        result = QMessageBox.question(self, "Exit Mahoraga", "Are you sure you want to exit Mahoraga?", QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+        if result == QMessageBox.Yes:
+            self.close()
+    
     def setup_worker(self):
 
         self.thread = QThread()
-        self.worker = AgentWorker(self.agent)
-        self.worker.moveToThread(self.thread)
-        self.chat_page.message_sent.connect(self.worker.process)
-        self.worker.finished.connect(self.handle_response)
-        self.worker.error.connect(self.handle_error) 
-        self.thread.start()
 
+        self.worker = AgentWorker()
+
+        self.worker.moveToThread(
+        self.thread
+    )
+
+        self.thread.started.connect(
+        self.worker.initialize
+    )
+
+        self.chat_page.message_sent.connect(
+        self.worker.process
+    )
+
+        self.worker.finished.connect(
+        self.handle_response
+    )
+
+        self.worker.error.connect(
+        self.handle_error
+    )
+
+        self.thread.start()
 
     def create_dashboard_page(self):
 
