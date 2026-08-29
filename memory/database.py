@@ -2,49 +2,96 @@ import sqlite3
 from pathlib import Path
 
 
-DATABASE_PATH = (Path("data") / "mahoraga.db")
-
-
 class MemoryDatabase:
 
     def __init__(self):
 
-        DATABASE_PATH.parent.mkdir(exist_ok=True)
+        self.directory = (
+            Path.home() / ".mahoraga"
+        )
 
-        self.connection = sqlite3.connect(DATABASE_PATH, check_same_thread=False)
+        self.directory.mkdir(
+            parents=True,
+            exist_ok=True
+        )
 
-        self.create_tables()
+        self.path = (
+            self.directory / "memory.db"
+        )
 
-    def create_tables(self):
+        self.connection = sqlite3.connect(
+            self.path,
+            check_same_thread=False
+        )
 
-        cursor = self.connection.cursor()
+        self.connection.row_factory = (
+            sqlite3.Row
+        )
 
-        cursor.execute("""
+        self._initialize()
+
+    def _initialize(self):
+
+        self.connection.execute(
+            """
             CREATE TABLE IF NOT EXISTS memories (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
-                category TEXT NOT NULL,
+
                 content TEXT NOT NULL,
-                importance REAL DEFAULT 0.5,
-                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)""")
 
-        cursor.execute("""
-            CREATE TABLE IF NOT EXISTS experiences (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                task TEXT NOT NULL,
-                action TEXT,
-                result TEXT,
-                success INTEGER,
-                lesson TEXT,
-                confidence REAL DEFAULT 0.5,
-                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)""")
+                category TEXT DEFAULT 'general',
 
-        cursor.execute("""
-            CREATE TABLE IF NOT EXISTS skills (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                name TEXT UNIQUE NOT NULL,
-                description TEXT,
-                procedure TEXT,
-                confidence REAL DEFAULT 0.5,
-                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)""")
+                source TEXT,
+
+                project TEXT,
+
+                importance INTEGER DEFAULT 1,
+
+                created_at TIMESTAMP
+                    DEFAULT CURRENT_TIMESTAMP,
+
+                last_used_at TIMESTAMP,
+
+                use_count INTEGER DEFAULT 0
+            )
+            """
+        )
 
         self.connection.commit()
+
+    def insert(
+        self,
+        content,
+        category="general",
+        source=None,
+        project=None,
+        importance=1
+    ):
+
+        cursor = self.connection.execute(
+            """
+            INSERT INTO memories (
+                content,
+                category,
+                source,
+                project,
+                importance
+            )
+            VALUES (?, ?, ?, ?, ?)
+            """,
+            (
+                content,
+                category,
+                source,
+                project,
+                importance
+            )
+        )
+
+        self.connection.commit()
+
+        return cursor.lastrowid
+
+    def close(self):
+
+        self.connection.close()

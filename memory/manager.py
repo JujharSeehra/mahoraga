@@ -1,6 +1,6 @@
-from memory.database import (
-    MemoryDatabase
-)
+from memory.database import MemoryDatabase
+from memory.store import MemoryStore
+from memory.retrieval import MemoryRetriever
 
 
 class MemoryManager:
@@ -9,63 +9,74 @@ class MemoryManager:
 
         self.database = MemoryDatabase()
 
+        self.store = MemoryStore()
+
+        self.retriever = MemoryRetriever(
+            self.database
+        )
+
     def remember(
         self,
-        category,
         content,
-        importance=0.5
+        category="general",
+        source=None,
+        project=None,
+        importance=1
     ):
 
-        cursor = (
-            self.database.connection
-            .cursor()
+        # Check for an existing memory before
+        # creating a new one.
+        existing = self.recall(
+            content,
+            limit=10
         )
 
-        cursor.execute(
-            """
-            INSERT INTO memories
-            (category, content, importance)
-            VALUES (?, ?, ?)
-            """,
-            (
-                category,
-                content,
-                importance,
-            )
+        normalized_new = (
+            content.strip().lower()
         )
 
-        self.database.connection.commit()
+        for memory in existing:
 
-    def recall(self, category=None):
+            normalized_existing = (
+                memory["content"]
+                .strip()
+                .lower()
+            )
 
-        cursor = (
-            self.database.connection
-            .cursor()
+            if normalized_new == normalized_existing:
+
+                return memory["id"]
+
+        return self.store.remember(
+            content=content,
+            category=category,
+            source=source,
+            project=project,
+            importance=importance
         )
 
-        if category:
+    def recall(
+        self,
+        query,
+        limit=5
+    ):
 
-            cursor.execute(
-                """
-                SELECT content
-                FROM memories
-                WHERE category = ?
-                ORDER BY importance DESC
-                """,
-                (category,)
-            )
+        return self.retriever.search(
+            query,
+            limit
+        )
 
-        else:
+    def recall_text(
+        self,
+        query,
+        limit=5
+    ):
 
-            cursor.execute(
-                """
-                SELECT content
-                FROM memories
-                ORDER BY importance DESC
-                """
-            )
+        memories = self.recall(
+            query,
+            limit
+        )
 
-        return [
-            row[0]
-            for row in cursor.fetchall()
-        ]
+        return self.retriever.format_results(
+            memories
+        )

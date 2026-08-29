@@ -77,14 +77,14 @@ class MahoragaAgent:
         self.memory.remember(
             category="user",
             content=content,
-            importance=0.8
+            importance=3
         )
 
         return "Memory Stored"
 
-    def recall(self):
+    def recall(self, query, limit = 5):
 
-        return self.memory.recall()
+        return self.memory.recall(query, limit = limit)
 
     def ask_with_tools(self, user_input):
 

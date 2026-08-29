@@ -120,3 +120,88 @@ class OpenFolderTool(Tool):
             "path": str(path),
             "status": "opened"
         }
+class ListApplicationsTool(Tool):
+
+    @property
+    def name(self):
+
+        return "list_applications"
+
+    @property
+    def description(self):
+
+        return (
+            "List installed macOS applications. "
+            "Use this when you need to discover "
+            "the exact name of an installed application."
+        )
+
+    def declaration(self):
+
+        return {
+            "name": self.name,
+            "description": self.description,
+            "parameters": {
+                "type": "object",
+                "properties": {}
+            }
+        }
+
+    def execute(self):
+
+        try:
+
+            result = subprocess.run(
+                [
+                    "find",
+                    "/Applications",
+                    "/System/Applications",
+                    "-maxdepth",
+                    "2",
+                    "-name",
+                    "*.app",
+                    "-type",
+                    "d"
+                ],
+                capture_output=True,
+                text=True,
+                timeout=10
+            )
+
+        except Exception as error:
+
+            return {
+                "status": "error",
+                "error": str(error)
+            }
+
+        applications = []
+
+        for line in result.stdout.splitlines():
+
+            line = line.strip()
+
+            if not line:
+                continue
+
+            name = line.rsplit(
+                "/",
+                1
+            )[-1]
+
+            if name.endswith(".app"):
+
+                name = name[:-4]
+
+            applications.append(name)
+
+        applications = sorted(
+            set(applications),
+            key=str.lower
+        )
+
+        return {
+            "status": "success",
+            "count": len(applications),
+            "applications": applications
+        }

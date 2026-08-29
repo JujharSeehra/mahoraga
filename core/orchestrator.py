@@ -1,5 +1,7 @@
 from google.genai import types
-
+from memory.learning import LearningEngine
+from memory.judge import LearningJudge
+from memory.triggers import LearningTrigger
 
 class Orchestrator:
 
@@ -15,10 +17,11 @@ class Orchestrator:
         self.brain = brain
         self.tools = tools
         self.memory = memory
+        self.learning = (LearningEngine(self.memory) if self.memory else None)
+        self.learning_judge = (LearningJudge(brain=self.brain, memory=self.memory) if self.memory else None)
+        self.learning_trigger = ( LearningTrigger() if self.memory else None)
         self.state_manager = state_manager
-        self.permission_manager = (
-            permission_manager
-        )
+        self.permission_manager = (permission_manager)
 
     def get_tool_declarations(self):
 
@@ -83,10 +86,137 @@ class Orchestrator:
             **arguments
         )
 
+    def get_memory_context(
+        self,
+        user_input,
+        limit=5
+    ):
+
+        if self.memory is None:
+
+            return ""
+
+        try:
+
+            memories = self.memory.recall(
+                user_input,
+                limit=limit
+            )
+
+        except Exception as error:
+
+            print(
+                f"Memory retrieval error: {error}"
+            )
+
+            return ""
+
+        if not memories:
+
+            return ""
+
+        lines = [
+            "RELEVANT LONG-TERM MEMORY:",
+            ""
+        ]
+
+        for memory in memories:
+
+            category = (
+                memory.get("category")
+                or "general"
+            )
+
+            project = (
+                memory.get("project")
+            )
+
+            content = (
+                memory.get("content")
+                or ""
+            )
+
+            if project:
+
+                lines.append(
+                    f"[{category} | {project}] "
+                    f"{content}"
+                )
+
+            else:
+
+                lines.append(
+                    f"[{category}] "
+                    f"{content}"
+                )
+
+        lines.extend([
+            "",
+            "Use these memories when relevant.",
+            "Do not assume a memory is correct "
+            "if it conflicts with newer information."
+        ])
+
+        return "\n".join(lines)
+    def learn_from_interaction(
+        self,
+        user_input,
+        response
+    ):
+
+        if (
+            self.learning_judge is None
+            or self.learning_trigger is None
+        ):
+
+            return None
+
+        if not self.learning_trigger.should_evaluate(
+            user_input
+        ):
+
+            return None
+
+        if hasattr(response, "text"):
+
+            response_text = response.text
+
+        else:
+
+            response_text = str(response)
+
+        result = (
+            self.learning_judge
+            .learn_from_interaction(
+                user_input=user_input,
+                assistant_response=response_text
+            )
+        )
+
+        return result
+
     def run(self, user_input):
 
+        memory_context = (
+            self.get_memory_context(
+                user_input
+            )
+        )
+
+        if memory_context:
+
+            initial_content = (
+                f"{memory_context}\n\n"
+                f"CURRENT USER REQUEST:\n"
+                f"{user_input}"
+            )
+
+        else:
+
+            initial_content = user_input
+
         contents = [
-            user_input
+            initial_content
         ]
 
         for _ in range(10):

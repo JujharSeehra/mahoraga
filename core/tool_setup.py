@@ -27,7 +27,7 @@ from tools.browser.browser import (
 
 from tools.computer.apps import (
     OpenApplicationTool,
-    OpenFolderTool,
+    OpenFolderTool, ListApplicationsTool
 )
 
 
@@ -88,6 +88,7 @@ def create_tool_registry():
     registry.register(
         OpenApplicationTool()
     )
+    registry.register(ListApplicationsTool())
 
     registry.register(
         OpenFolderTool(

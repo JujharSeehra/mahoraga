@@ -15,3 +15,5 @@ data/skills/*
 .idea/
 
 config/workspaces.json
+
+.mahoraga/memory.db

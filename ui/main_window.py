@@ -3,6 +3,7 @@ from PySide6.QtCore import (Qt, QThread, Slot)
 from core.worker import AgentWorker
 from ui.chat import ChatPage
 from PySide6.QtWidgets import QMessageBox
+from PySide6.QtGui import QIcon
 
 class MainWindow(QMainWindow):
 
@@ -11,6 +12,7 @@ class MainWindow(QMainWindow):
 
         self.setWindowTitle("Mahoraga")
         self.setMinimumSize(1100, 700)
+        self.setWindowIcon(QIcon("icon/mahoraga.png"))
 
         self.build_ui()
         self.setup_worker()
