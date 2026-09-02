@@ -1,5 +1,5 @@
 from tools.base import Tool
-
+import subprocess
 
 class SearchFilesTool(Tool):
 
@@ -269,4 +269,125 @@ class ReadFileTool(Tool):
             "workspace": workspace,
             "path": path,
             "content": content[:30000]
+        }
+
+class OpenFileTool(Tool):
+
+    def __init__(self, workspace_manager):
+
+        self.workspace_manager = (
+            workspace_manager
+        )
+
+    @property
+    def name(self):
+
+        return "open_file"
+
+    @property
+    def description(self):
+
+        return (
+            "Open a specific file from an approved "
+            "workspace using the default macOS application."
+        )
+
+    def declaration(self):
+
+        return {
+            "name": self.name,
+            "description": self.description,
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "workspace": {
+                        "type": "string",
+                        "description": (
+                            "Name of the approved "
+                            "workspace."
+                        )
+                    },
+                    "path": {
+                        "type": "string",
+                        "description": (
+                            "Path to the file relative "
+                            "to the workspace."
+                        )
+                    }
+                },
+                "required": [
+                    "workspace",
+                    "path"
+                ]
+            }
+        }
+
+    def execute(
+        self,
+        workspace,
+        path
+    ):
+
+        root = (
+            self.workspace_manager
+            .get_workspace(workspace)
+        )
+
+        if root is None:
+
+            raise ValueError(
+                f"Unknown workspace: {workspace}"
+            )
+
+        target = (
+            root / path
+        ).resolve()
+
+        # Make absolutely sure the requested
+        # file stays inside the approved workspace.
+        try:
+
+            target.relative_to(root)
+
+        except ValueError:
+
+            raise ValueError(
+                "Access outside the workspace "
+                "is not allowed."
+            )
+
+        if not target.exists():
+
+            raise FileNotFoundError(
+                f"File not found: {path}"
+            )
+
+        if not target.is_file():
+
+            raise ValueError(
+                "Target is not a file."
+            )
+
+        try:
+
+            subprocess.Popen(
+                [
+                    "open",
+                    str(target)
+                ]
+            )
+
+        except Exception as error:
+
+            return {
+                "workspace": workspace,
+                "path": path,
+                "status": "error",
+                "error": str(error)
+            }
+
+        return {
+            "workspace": workspace,
+            "path": path,
+            "status": "opened"
         }

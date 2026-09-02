@@ -23,47 +23,29 @@ class OpenApplicationTool:
                 )
             }
         },
-        "required": [
-            "application"
-        ]
+        "required": ["application"]
     }
 
     def execute(self, application):
 
         if not isinstance(application, str):
-            raise ValueError(
-                "Application name must be a string."
-            )
+            raise ValueError("Application name must be a string.")
 
         application = application.strip()
 
         if not application:
-            raise ValueError(
-                "Application name cannot be empty."
-            )
+            raise ValueError("Application name cannot be empty.")
 
         try:
 
-            result = subprocess.run(
-                [
-                    "open",
-                    "-a",
-                    application
-                ],
-                capture_output=True,
-                text=True,
-                timeout=10
-            )
+            result = subprocess.run(["open","-a",application],capture_output=True,text=True,timeout=10)
 
         except subprocess.TimeoutExpired:
 
             return {
                 "success": False,
                 "application": application,
-                "error": (
-                    "Timed out while attempting "
-                    "to open the application."
-                )
+                "error": "Timed out while attempting to open the application."
             }
 
         except Exception as error:
@@ -76,10 +58,7 @@ class OpenApplicationTool:
 
         if result.returncode != 0:
 
-            error = (
-                result.stderr.strip()
-                or "macOS could not open the application."
-            )
+            error = result.stderr.strip() or "macOS could not open the application."
 
             return {
                 "success": False,
@@ -90,7 +69,5 @@ class OpenApplicationTool:
         return {
             "success": True,
             "application": application,
-            "message": (
-                f"Successfully opened {application}."
-            )
+            "message": (f"Successfully opened {application}.")
         }

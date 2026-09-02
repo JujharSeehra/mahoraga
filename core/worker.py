@@ -24,9 +24,7 @@ class AgentWorker(QObject):
 
         except Exception as errors:
 
-            self.error.emit(
-                str(errors)
-            )
+            self.error.emit(str(errors))
 
     @Slot(str)
     def process(self, message):
@@ -35,20 +33,10 @@ class AgentWorker(QObject):
 
             if self.agent is None:
 
-                raise RuntimeError(
-                    "Mahoraga agent has not initialized."
-                )
+                raise RuntimeError("Mahoraga agent has not initialized.")
+            response = self.agent.ask(message)
 
-            response = self.agent.ask(
-                message
-            )
-
-            self.finished.emit(
-                response
-            )
+            self.finished.emit(response)
 
         except Exception as errors:
-
-            self.error.emit(
-                str(errors)
-            )
+            self.error.emit(str(errors))
