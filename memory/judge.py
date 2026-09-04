@@ -74,41 +74,25 @@ ASSISTANT RESPONSE:
 
         try:
 
-            response = self.brain.think(
-                prompt
-            )
+            response = self.brain.think(prompt)
 
-            return self._parse_response(
-                response
-            )
+            return self._parse_response(response)
 
         except Exception as error:
 
-            print(
-                f"Learning judge error: {error}"
-            )
+            print(f"Learning judge error: {error}")
 
             return {
                 "should_remember": False
             }
 
-    def _parse_response(
-        self,
-        response
-    ):
+    def _parse_response(self,response):
 
         text = response.strip()
 
-        # Handle accidental markdown fences.
         if text.startswith("```"):
-
             lines = text.splitlines()
-
-            lines = [
-                line
-                for line in lines
-                if not line.strip().startswith("```")
-            ]
+            lines = [line for line in lines if not line.strip().startswith("```")]
 
             text = "\n".join(lines).strip()
 
@@ -128,23 +112,15 @@ ASSISTANT RESPONSE:
                 "should_remember": False
             }
 
-        if not data.get(
-            "should_remember",
-            False
-        ):
+        if not data.get("should_remember",False):
 
             return {
                 "should_remember": False
             }
 
-        memory = data.get(
-            "memory"
-        )
+        memory = data.get("memory")
 
-        if not isinstance(
-            memory,
-            str
-        ) or not memory.strip():
+        if not isinstance(memory,str) or not memory.strip():
 
             return {
                 "should_remember": False
@@ -166,47 +142,23 @@ ASSISTANT RESPONSE:
         }
 
         if category not in allowed_categories:
-
             category = "general"
 
-        importance = data.get(
-            "importance",
-            3
-        )
+        importance = data.get("importance",3)
 
         try:
+            importance = int(importance)
 
-            importance = int(
-                importance
-            )
-
-        except (
-            TypeError,
-            ValueError
-        ):
-
+        except (TypeError,ValueError):
             importance = 3
+        importance = max(1,min(5, importance))
 
-        importance = max(
-            1,
-            min(5, importance)
-        )
-
-        project = data.get(
-            "project"
-        )
-
+        project = data.get("project")
         if project is not None:
-
-            if not isinstance(
-                project,
-                str
-            ):
-
+            if not isinstance(project,str):
                 project = None
 
             elif not project.strip():
-
                 project = None
 
         return {
@@ -217,20 +169,11 @@ ASSISTANT RESPONSE:
             "memory": memory.strip()
         }
 
-    def learn_from_interaction(
-        self,
-        user_input,
-        assistant_response
-    ):
+    def learn_from_interaction(self,user_input,assistant_response):
 
-        decision = self.evaluate(
-            user_input,
-            assistant_response
-        )
+        decision = self.evaluate(user_input,assistant_response)
 
-        if not decision.get(
-            "should_remember"
-        ):
+        if not decision.get("should_remember"):
 
             return None
 

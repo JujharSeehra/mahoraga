@@ -6,77 +6,28 @@ from memory.retrieval import MemoryRetriever
 class MemoryManager:
 
     def __init__(self):
-
         self.database = MemoryDatabase()
-
         self.store = MemoryStore()
+        self.retriever = MemoryRetriever(self.database)
 
-        self.retriever = MemoryRetriever(
-            self.database
-        )
+    def remember(self,content,category="general",source=None,project=None,importance=1):
+        existing = self.recall(content,limit=10)
 
-    def remember(
-        self,
-        content,
-        category="general",
-        source=None,
-        project=None,
-        importance=1
-    ):
-
-        # Check for an existing memory before
-        # creating a new one.
-        existing = self.recall(
-            content,
-            limit=10
-        )
-
-        normalized_new = (
-            content.strip().lower()
-        )
+        normalized_new = (content.strip().lower())
 
         for memory in existing:
-
-            normalized_existing = (
-                memory["content"]
-                .strip()
-                .lower()
-            )
-
+            normalized_existing = (memory["content"].strip().lower())
             if normalized_new == normalized_existing:
-
                 return memory["id"]
 
-        return self.store.remember(
-            content=content,
-            category=category,
-            source=source,
-            project=project,
-            importance=importance
-        )
+        return self.store.remember(content=content,category=category,source=source,project=project,importance=importance)
 
-    def recall(
-        self,
-        query,
-        limit=5
-    ):
+    def recall(self,query,limit=5):
 
-        return self.retriever.search(
-            query,
-            limit
-        )
+        return self.retriever.search(query,limit)
 
-    def recall_text(
-        self,
-        query,
-        limit=5
-    ):
+    def recall_text( self,query,limit=5):
 
-        memories = self.recall(
-            query,
-            limit
-        )
+        memories = self.recall(query,limit)
 
-        return self.retriever.format_results(
-            memories
-        )
+        return self.retriever.format_results(memories)

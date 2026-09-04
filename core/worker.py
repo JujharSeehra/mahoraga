@@ -16,8 +16,6 @@ class AgentWorker(QObject):
 
         try:
 
-            # Import here so the agent is created
-            # inside the worker thread.
             from core.agent import MahoragaAgent
 
             self.agent = MahoragaAgent()

@@ -17,11 +17,7 @@ class MahoragaAgent:
 
         self.memory = MemoryManager()
 
-        self.orchestrator = Orchestrator(
-            brain=self.brain,
-            tools=self.tools,
-            memory=self.memory
-        )
+        self.orchestrator = Orchestrator(brain=self.brain,tools=self.tools,memory=self.memory)
 
     def ask(self, user_input: str):
 
@@ -30,18 +26,12 @@ class MahoragaAgent:
             "content": user_input
         })
 
-        response = self.orchestrator.run(
-            user_input
-        )
+        response = self.orchestrator.run(user_input)
 
-        # Gemini's final response may be a
-        # GenerateContentResponse object.
         if hasattr(response, "text"):
-
             response_text = response.text
 
         else:
-
             response_text = str(response)
 
         self.conversation.append({
@@ -54,40 +44,23 @@ class MahoragaAgent:
     def build_prompt(self):
 
         conversation_text = ""
-
         for message in self.conversation:
-
             role = message["role"]
-
             content = message["content"]
-
             conversation_text += (
                 f"{role.upper()}: {content}\n"
             )
 
         return (
-            f"{SYSTEM_PROMPT}\n"
-            f"Conversation:\n"
-            f"{conversation_text}\n"
-            f"Respond to the latest user message."
+            f"{SYSTEM_PROMPT}\n Conversation:\n {conversation_text}\n Respond to the latest user message."
         )
 
     def remember(self, content):
-
-        self.memory.remember(
-            category="user",
-            content=content,
-            importance=3
-        )
-
+        self.memory.remember(category="user",content=content,importance=3)
         return "Memory Stored"
 
     def recall(self, query, limit = 5):
-
         return self.memory.recall(query, limit = limit)
 
     def ask_with_tools(self, user_input):
-
-        return self.orchestrator.run(
-            user_input
-        )
+        return self.orchestrator.run(user_input)

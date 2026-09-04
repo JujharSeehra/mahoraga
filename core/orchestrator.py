@@ -150,30 +150,14 @@ class Orchestrator:
                     f"{content}"
                 )
 
-        lines.extend([
-            "",
-            "Use these memories when relevant.",
-            "Do not assume a memory is correct "
-            "if it conflicts with newer information."
-        ])
-
+        lines.extend(["","Use these memories when relevant.","Do not assume a memory is correct if it conflicts with newer information."])
         return "\n".join(lines)
-    def learn_from_interaction(
-        self,
-        user_input,
-        response
-    ):
+    def learn_from_interaction(self,user_input,response):
 
-        if (
-            self.learning_judge is None
-            or self.learning_trigger is None
-        ):
-
+        if (self.learning_judge is None or self.learning_trigger is None):
             return None
 
-        if not self.learning_trigger.should_evaluate(
-            user_input
-        ):
+        if not self.learning_trigger.should_evaluate(user_input):
 
             return None
 
@@ -185,87 +169,42 @@ class Orchestrator:
 
             response_text = str(response)
 
-        result = (
-            self.learning_judge
-            .learn_from_interaction(
-                user_input=user_input,
-                assistant_response=response_text
-            )
-        )
+        result =self.learning_judge.learn_from_interaction(user_input=user_input,assistant_response=response_text)
 
         return result
 
     def run(self, user_input):
 
-        memory_context = (
-            self.get_memory_context(
-                user_input
-            )
-        )
+        memory_context = (self.get_memory_context(user_input))
 
         if memory_context:
 
             initial_content = (
-                f"{memory_context}\n\n"
-                f"CURRENT USER REQUEST:\n"
-                f"{user_input}"
+                f"{memory_context}\n\n CURRENT USER REQUEST:\n {user_input}"
             )
 
         else:
-
             initial_content = user_input
 
-        contents = [
-            initial_content
-        ]
+        contents = [initial_content]
 
         for _ in range(10):
 
             response = (
-                self.brain.think_with_tools(
-                    contents,
-                    self.get_tool_declarations()
-                )
-            )
+                self.brain.think_with_tools(contents,self.get_tool_declarations()))
 
-            function_calls = (
-                self.extract_function_calls(
-                    response
-                )
-            )
+            function_calls = (self.extract_function_calls(response))
 
-            # Gemini has finished using tools.
             if not function_calls:
-
                 return response
 
-            # Give Gemini the model's previous
-            # response so it knows which tool
-            # calls it made.
-            contents.append(
-                response.candidates[0].content
-            )
+            contents.append(response.candidates[0].content)
 
             for call in function_calls:
+                result = self.execute_tool(call)
+                
+                function_response =  types.Part.from_function_response(name=call.name,response=result)
 
-                result = self.execute_tool(
-                    call
-                )
+                contents.append(function_response)
 
-                # Proper Gemini function-response
-                # object.
-                function_response = (
-                    types.Part.from_function_response(
-                        name=call.name,
-                        response=result
-                    )
-                )
-
-                contents.append(
-                    function_response
-                )
-
-        raise RuntimeError(
-            "Mahoraga reached the maximum "
-            "number of tool calls."
-        )
+        raise RuntimeError("Mahoraga reached the maximum number of tool calls.")

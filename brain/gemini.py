@@ -20,10 +20,6 @@ class GeminiBrain:
         response = self.chat.send_message(prompt)
         return response.text
     def think_with_tools(self, contents, tool_declarations,):
-        config = types.GenerateContentConfig(tools = [
-            types.Tool(function_declarations = [types.FunctionDeclaration(name = tool["name"], description = tool["description"], parameters = tool["parameters"],)
-            for tool in tool_declarations
-            ])
-        ])
+        config = types.GenerateContentConfig(tools = [types.Tool(function_declarations = [types.FunctionDeclaration(name = tool["name"], description = tool["description"], parameters = tool["parameters"],) for tool in tool_declarations])])
         response = self.client.models.generate_content(model = self.model, contents = contents, config = config,)
         return response
