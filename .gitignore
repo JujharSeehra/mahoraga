@@ -1,19 +1,34 @@
 
 .env
+.env.*
+!.env.example
 
-venv/
 __pycache__/
-*.pyc
+*.py[cod]
+*.pyo
 
-data/memory/*
-data/experiences/*
-data/skills/*
+.venv/
+venv/
+env/
 
 .DS_Store
 
 .vscode/
 .idea/
 
-config/workspaces.json
+data/*.db
+data/*.sqlite
+data/*.sqlite3
 
-.mahoraga/memory.db
+config/workspaces.json
+config/devices.json
+config/tasks.json
+
+*.log
+
+build/
+dist/
+*.spec
+
+*.swp
+*.swo
