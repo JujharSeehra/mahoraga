@@ -1,0 +1,27 @@
+{
+    "tasks": [
+        {
+            "id": "task_20260908213303787103",
+            "title": "Test Mahoraga task",
+            "status": "in_progress",
+            "created_at": "2026-09-08T21:33:03.787433",
+            "steps": [
+                {
+                    "id": 1,
+                    "description": "First step",
+                    "completed": false
+                },
+                {
+                    "id": 2,
+                    "description": "Second step",
+                    "completed": false
+                },
+                {
+                    "id": 3,
+                    "description": "Third step",
+                    "completed": false
+                }
+            ]
+        }
+    ]
+}

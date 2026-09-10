@@ -8,8 +8,6 @@ from tools.browser.manager import BrowserManager
 
 from tools.browser.browser import OpenURLTool, GetPageTextTool, ClickLinkTool, BrowserBackTool
 
-#Add this code once we get brave: from tools.browser.search import (SearchWebTool)
-
 from tools.computer.apps import OpenApplicationTool, OpenFolderTool, ListApplicationsTool, OpenInVSCodeTool
 
 from tools.hardware.serial import ListSerialDevicesTool, ConnectSerialDeviceTool, DisconnectSerialDeviceTool, ReadSerialTool
@@ -37,9 +35,6 @@ def create_tool_registry():
 
     registry.register(ReadFileTool(workspace_manager))
     registry.register(OpenFileTool(workspace_manager))
-
-    #registry.register(SearchWebTool(browser_manager))
-
     registry.register(OpenURLTool(browser_manager))
 
     registry.register(GetPageTextTool(browser_manager))

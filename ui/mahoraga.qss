@@ -3,98 +3,374 @@ QMainWindow {
 }
 
 QWidget {
-    color: #e8e8ed;
-    font-family: "SF Pro Display", "Helvetica Neue", sans-serif;
+    color: #e7e8ed;
+    font-family: "SF Pro Display", "Helvetica Neue", Arial, sans-serif;
     font-size: 14px;
 }
 
+#central {
+    background-color: #08090d;
+}
+
 #sidebar {
-    background-color: #0d0f15;
-    border-right: 1px solid #20232c;
+    background-color: #0b0d12;
+    border-right: 1px solid #1d2029;
 }
 
 #title {
-    color: #f2f2f5;
-    font-size: 22px;
-    font-weight: 700;
-}
-
-#page_title {
     color: #f5f5f7;
-    font-size: 28px;
+    font-size: 21px;
     font-weight: 700;
+    letter-spacing: 1px;
 }
 
-#subtitle {
-    color: #777b88;
-    font-size: 13px;
+#brand_icon {
+    color: #d7ad45;
+    font-size: 22px;
 }
 
-QPushButton {
+#sidebar_subtitle {
+    color: #555b68;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 1.4px;
+    padding-left: 2px;
+}
+
+#section_label {
+    color: #4f5562;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.3px;
+    padding-left: 10px;
+}
+
+#nav_button {
     background-color: transparent;
-    color: #9da1ad;
-    border: none;
+    color: #858b99;
+    border: 1px solid transparent;
     border-radius: 9px;
-    padding: 12px;
+    padding: 10px 13px;
     text-align: left;
+    font-size: 13px;
+    font-weight: 500;
 }
 
-QPushButton:hover {
-    background-color: #171a22;
-    color: #ffffff;
+#nav_button:hover {
+    background-color: #14171f;
+    color: #e9eaf0;
+    border: 1px solid #1c2029;
 }
 
-QPushButton:pressed {
-    background-color: #20232c;
+#nav_button:pressed {
+    background-color: #191c24;
 }
 
-QLineEdit {
-    background-color: #11131a;
-    color: #f0f0f3;
-    border: 1px solid #282c36;
-    border-radius: 12px;
-    padding: 13px;
-}
-
-QLineEdit:focus {
-    border: 1px solid #555b6b;
-}
-
-QTextEdit {
-    background-color: #0b0d12;
-    color: #e8e8ed;
-    border: none;
-    padding: 15px;
-}
-
-#status {
-    color: #8f96a3;
-    font-size: 12px;
-}
-
-#send_button {
-    background-color: #f0f0f2;
-    color: #101116;
-    border-radius: 10px;
-    padding: 12px 20px;
+#nav_button[active="true"] {
+    background-color: #17191f;
+    color: #f0f1f4;
+    border: 1px solid #2a2d35;
     font-weight: 600;
 }
 
-#send_button:hover {
-    background-color: #ffffff;
+#sidebar_status_card {
+    background-color: #10131a;
+    border: 1px solid #1e222c;
+    border-radius: 10px;
 }
 
-#card {
-    background-color: #10131a;
-    border: 1px solid #20242e;
-    border-radius: 14px;
+#status_dot {
+    color: #d7ad45;
+    font-size: 9px;
+}
+
+#sidebar_status {
+    color: #c8cbd2;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+}
+
+#sidebar_status_detail {
+    color: #606673;
+    font-size: 10px;
+    padding-left: 17px;
 }
 
 #exit_button {
-    color: #a0a3ad;
+    background-color: transparent;
+    color: #707581;
+    border: 1px solid transparent;
+    border-radius: 9px;
+    padding: 10px;
+    text-align: center;
+    font-size: 11px;
+    font-weight: 600;
 }
 
 #exit_button:hover {
     background-color: #21171a;
-    color: #ffffff;
+    color: #e0e1e5;
+    border: 1px solid #3a2529;
+}
+
+#header {
+    background-color: #0a0c11;
+    border-bottom: 1px solid #1d2028;
+}
+
+#header_title {
+    color: #f0f1f4;
+    font-size: 17px;
+    font-weight: 650;
+}
+
+#header_subtitle {
+    color: #656b77;
+    font-size: 11px;
+}
+
+#header_status {
+    background-color: #10131a;
+    border: 1px solid #20242e;
+    border-radius: 8px;
+}
+
+#header_status_dot {
+    color: #d7ad45;
+    font-size: 9px;
+}
+
+#header_status_dot[state="error"] {
+    color: #c75d5d;
+}
+
+#header_status_text {
+    color: #aeb2bc;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+}
+
+#pages {
+    background-color: #08090d;
+}
+
+#page_title {
+    color: #f3f4f6;
+    font-size: 27px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+}
+
+#subtitle {
+    color: #676d79;
+    font-size: 12px;
+}
+
+#section_heading {
+    color: #bfc2ca;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+#hero_card {
+    background-color: #0e1117;
+    border: 1px solid #20242d;
+    border-radius: 16px;
+}
+
+#hero_status {
+    color: #d7ad45;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+}
+
+#hero_heading {
+    color: #f2f3f5;
+    font-size: 25px;
+    font-weight: 650;
+}
+
+#hero_description {
+    color: #777d89;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+#info_text {
+    color: #6c7280;
+    font-size: 11px;
+}
+
+#stat_card {
+    background-color: #0e1117;
+    border: 1px solid #1d212a;
+    border-radius: 12px;
+}
+
+#stat_card:hover {
+    border: 1px solid #2a2e38;
+}
+
+#stat_name {
+    color: #626875;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+#stat_value {
+    color: #eceef2;
+    font-size: 25px;
+    font-weight: 650;
+}
+
+#stat_description {
+    color: #5f6571;
+    font-size: 10px;
+}
+
+#feature_card,
+#large_feature_card {
+    background-color: #0e1117;
+    border: 1px solid #20242d;
+    border-radius: 14px;
+}
+
+#feature_card:hover,
+#large_feature_card:hover {
+    border: 1px solid #2a2e38;
+}
+
+#card_heading {
+    color: #e7e8ec;
+    font-size: 15px;
+    font-weight: 650;
+    letter-spacing: 0.3px;
+}
+
+#card_description {
+    color: #707682;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+#primary_button {
+    background-color: #d7ad45;
+    color: #101116;
+    border: none;
+    border-radius: 9px;
+    padding: 11px 16px;
+    font-weight: 700;
+}
+
+#primary_button:hover {
+    background-color: #e1ba55;
+}
+
+#primary_button:pressed {
+    background-color: #c79d38;
+}
+
+#secondary_button {
+    background-color: #15181f;
+    color: #bfc2ca;
+    border: 1px solid #292d36;
+    border-radius: 8px;
+    padding: 9px 14px;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+#secondary_button:hover {
+    background-color: #1b1e26;
+    color: #f0f1f3;
+    border: 1px solid #353945;
+}
+
+#data_view {
+    background-color: #0b0e13;
+    color: #b9bdc6;
+    border: 1px solid #1c2029;
+    border-radius: 12px;
+    padding: 18px;
+    font-family: "SF Mono", "Menlo", monospace;
+    font-size: 11px;
+}
+
+QTextBrowser {
+    selection-background-color: #2b2f39;
+    selection-color: #ffffff;
+}
+
+#bottom_bar {
+    background-color: #0a0c11;
+    border-top: 1px solid #1b1e26;
+}
+
+#bottom_status {
+    color: #d7ad45;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.7px;
+}
+
+#bottom_info {
+    color: #4f5561;
+    font-size: 10px;
+}
+
+QScrollBar:vertical {
+    background: transparent;
+    width: 8px;
+    margin: 4px;
+}
+
+QScrollBar::handle:vertical {
+    background: #282c35;
+    border-radius: 4px;
+    min-height: 30px;
+}
+
+QScrollBar::handle:vertical:hover {
+    background: #383d48;
+}
+
+QScrollBar::add-line:vertical,
+QScrollBar::sub-line:vertical {
+    height: 0px;
+}
+
+QScrollBar:horizontal {
+    background: transparent;
+    height: 8px;
+    margin: 4px;
+}
+
+QScrollBar::handle:horizontal {
+    background: #282c35;
+    border-radius: 4px;
+    min-width: 30px;
+}
+
+QMessageBox {
+    background-color: #0d0f14;
+}
+
+QMessageBox QLabel {
+    color: #e8e9ed;
+}
+
+QMessageBox QPushButton {
+    background-color: #181b22;
+    color: #d5d7dd;
+    border: 1px solid #292d36;
+    border-radius: 7px;
+    padding: 7px 18px;
+}
+
+QMessageBox QPushButton:hover {
+    background-color: #22262f;
 }

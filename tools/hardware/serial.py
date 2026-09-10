@@ -100,6 +100,8 @@ class ReadSerialTool(Tool):
         return "read_serial"
     @property
     def description(self):
+        return "reads the serial output of a connected device"
+    def declaration(self):
         return {
             "name": self.name,
             "description": self.description,
@@ -111,7 +113,7 @@ class ReadSerialTool(Tool):
                         "description": "Serial Device Path"
                     },
                     "max_lines": {
-                        "type": "integet",
+                        "type": "integer",
                         "description": "Maximum number of lines to read"
                     }
                 },
