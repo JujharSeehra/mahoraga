@@ -13,6 +13,12 @@ It has numerous useful tools ingrained into it, which have numerous practical ap
 > **AI:** Google Gemini
 > **Interface:** PySide6
 
+## 📦 Download
+
+The latest stable release of Mahoraga is available on the
+[GitHub Releases page](https://github.com/JujharSeehra/mahoraga/releases).
+**Latest release:** [Mahoraga v1.0.0](https://github.com/JujharSeehra/mahoraga/releases/tag/v1.0.0)
+
 ## Features
 
 ### AI Reasoning
