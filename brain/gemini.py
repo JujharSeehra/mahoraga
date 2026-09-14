@@ -1,3 +1,5 @@
+import os
+
 from google import genai
 from google.genai import types
 from core.config import config
@@ -6,15 +8,14 @@ from core.config import config
 class GeminiBrain:
 
     def __init__(self):
-        if not config.GEMINI_API_KEY:
-            raise RuntimeError("GEMINI_API_KEY was not found in .env")
+        api_key = os.getenv("GEMINI_API_KEY")
 
-        self.client = genai.Client(api_key=config.GEMINI_API_KEY)
+        if not api_key:
+            raise RuntimeError("GEMINI_API_KEY is not configured")
+
+        self.client = genai.Client(api_key=api_key)
 
         self.model = config.GEMINI_MODEL
-
-        self.chat = self.client.chats.create(model=self.model)
-
     def think(self, prompt: str) -> str:
 
         response = self.chat.send_message(prompt)
