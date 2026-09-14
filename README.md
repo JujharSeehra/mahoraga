@@ -69,75 +69,17 @@ Exact versions may vary depending on the development environment.
 
 ## Installation
 
-### 1. Clone the repository
+Mahoraga is a desktop AI assistant for macOS with conversational AI, persistent memory, file search and reading, application and folder launching, web browsing, tool execution, and extensible device support.
+Requirements
 
-```bash
-git clone https://github.com/JujharSeehra/mahoraga.git
-cd mahoraga
-```
-
-### 2. Create a virtual environment
-
-```bash
-python3 -m venv .venv
-```
-
-Activate it:
-
-```bash
-source .venv/bin/activate
-```
-
-### 3. Install dependencies
-
-```bash
-python -m pip install -r requirements.txt
-```
-
-### 4. Install the Playwright browser
-
-Mahoraga uses Chromium through Playwright.
-
-```bash
-python -m playwright install chromium
-```
-
-### 5. Configure Gemini
-
-Create a `.env` file:
-
-```bash
-cp .env.example .env
-```
-
-Then open it:
-
-```bash
-open -e .env
-```
-
-Add your Gemini API configuration:
-
-```text
-GEMINI_API_KEY=your_gemini_api_key_here
-GEMINI_MODEL=your_gemini_model_here
-```
-
-### 6. Launch Mahoraga
-
-```bash
-mahoraga
-```
-
-## macOS Launcher
-
-If the included launcher is configured:
-
-```bash
-./run_mahoraga.sh
-```
-
-This can be used to start Mahoraga without manually activating the virtual environment each time.
+macOS on Apple Silicon (M1 or newer)
+Google Chrome for browser features
+A Gemini API key
+Installation
+Download Mahoraga-v1.0.0-macOS-arm64.zip from the latest release and extract it. Open Mahoraga.app.
+Because this release is not signed with an Apple Developer certificate, macOS may block it on first launch. If that happens, right-click or Control-click Mahoraga.app, choose Open, then choose Open again.
+On first launch, Mahoraga will ask for your Gemini API key. The key is stored locally in your macOS Application Support directory and is not included with the application.
+This release contains the compiled macOS application rather than only the Python source code.
 
 ### Workspace access
 
