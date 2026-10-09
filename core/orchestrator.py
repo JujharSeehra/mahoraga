@@ -2,17 +2,11 @@ from google.genai import types
 from memory.learning import LearningEngine
 from memory.judge import LearningJudge
 from memory.triggers import LearningTrigger
+from core.config import config
 
 class Orchestrator:
 
-    def __init__(
-        self,
-        brain,
-        tools,
-        memory=None,
-        state_manager=None,
-        permission_manager=None,
-    ):
+    def __init__(self, brain, tools, memory=None, state_manager=None, permission_manager=None):
 
         self.brain = brain
         self.tools = tools
@@ -174,37 +168,30 @@ class Orchestrator:
         return result
 
     def run(self, user_input):
-
-        memory_context = (self.get_memory_context(user_input))
-
+        memory_context = self.get_memory_context(user_input)
         if memory_context:
-
-            initial_content = (
-                f"{memory_context}\n\n CURRENT USER REQUEST:\n {user_input}"
-            )
-
+            initial_content = (f"{memory_context}\n\n CURRENT USER REQUEST:\n {user_input}")
         else:
             initial_content = user_input
-
+        if config.AI_PROVIDER == "hcai":
+            return self.brain.ask(initial_content)
         contents = [initial_content]
 
         for _ in range(10):
-
-            response = (
-                self.brain.think_with_tools(contents,self.get_tool_declarations()))
-
-            function_calls = (self.extract_function_calls(response))
+            response = self.brain.think_with_tools(
+            contents,
+            self.get_tool_declarations())
+            function_calls = self.extract_function_calls(response)
 
             if not function_calls:
                 return response
 
-            contents.append(response.candidates[0].content)
+            contents.append(
+            response.candidates[0].content)
 
             for call in function_calls:
                 result = self.execute_tool(call)
-                
-                function_response =  types.Part.from_function_response(name=call.name,response=result)
-
+                function_response = (types.Part.from_function_response(name=call.name, response=result))
                 contents.append(function_response)
 
         raise RuntimeError("Mahoraga reached the maximum number of tool calls.")
