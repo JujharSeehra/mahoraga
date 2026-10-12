@@ -6,7 +6,7 @@ The latest stable release of Mahoraga is available on the GitHub Releases page.
 
 Mahoraga is a desktop AI assistant for macOS with conversational AI, persistent memory, file search and reading, application and folder launching, web browsing, tool execution, and extensible device support. Requirements
 
-macOS on Apple Silicon (M1 or newer); Google Chrome for browser features if using a Gemini API Key. A Gemini API key or an HCAI API key. Installation: Download Mahoraga-v1.0.1-macOS-arm64.zip from the latest release and extract it. Open Mahoraga.app. Because this release is not signed with an Apple Developer certificate, macOS may block it on first launch. If that happens, right-click or Control-click Mahoraga.app, choose Open, then choose Open again. On first launch, Mahoraga will ask for your Gemini API key. The key is stored locally in your macOS Application Support directory and is not included with the application. This release contains the compiled macOS application rather than only the Python source code.
+macOS on Apple Silicon (M1 or newer); Google Chrome for browser features if using a Gemini API Key. A Gemini API key or an HCAI API key. Installation: Download Mahoraga-v1.0.1-macOS-arm64.zip from the latest release and extract it. Open Mahoraga.app. On first launch, Mahoraga will ask for your Gemini API key. The key is stored locally in your macOS Application Support directory and is not included with the application. This release contains the compiled macOS application rather than only the Python source code.
 
 License
 This project is released under the MIT License.
