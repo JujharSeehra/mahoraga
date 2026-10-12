@@ -7,52 +7,8 @@ It has numerous useful tools ingrained into it, which have numerous practical ap
 There are two options: For those above 18, you can get a free gemini api from Google AI studio, which will allow usage of the numerous tools Mahoraga provides.
 Otherwise, you will be using a model known as Qwen, and it will only provide chat opportunities with HCAI support. 
 
-## Download
-
 The latest stable release of Mahoraga is available on the
 [GitHub Releases page](https://github.com/JujharSeehra/mahoraga/releases).
-
-## Architecture
-
-The project is organized into modular components:
-
-```text
-mahoraga/
-│
-├── adaptation/
-├── brain/
-├── config/
-├── core/
-├── devices/
-├── memory/
-├── tasks/
-├── tools/
-│   ├── browser/
-│   ├── computer/
-│   └── hardware/
-│
-├── ui/
-│   ├── widgets/
-│   ├── main_window.py
-│   ├── app.py
-│   └── mahoraga.qss
-│
-├── main.py
-├── requirements.txt
-├── .env.example
-└── README.md
-```
-
-## Requirements
-
-### Software
-
-* macOS
-* Python 3.11 or newer
-* Git
-* pip
-* A Google Gemini API key
-* Chromium via Playwright
 
 Mahoraga is a desktop AI assistant for macOS with conversational AI, persistent memory, file search and reading, application and folder launching, web browsing, tool execution, and extensible device support.
 Requirements
